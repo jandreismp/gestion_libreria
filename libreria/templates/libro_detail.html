@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalle de Libro</title>
+</head>
+<body>
+    <h1>Detalle del Libro</h1>
+
+    <p><strong>ISBN:</strong> {{ object.isbn }}</p>
+    <p><strong>Tema:</strong> {{ object.tema }}</p>
+    <p><strong>Precio:</strong> {{ object.precio }}</p>
+    <p><strong>Autor:</strong> {{ object.id_autor }}</p>
+    <p><strong>Editor:</strong> {{ object.id_editor }}</p>
+    <p><strong>Stock:</strong> {{ object.stock }}</p>
+
+    <a href="{% url 'libro-update' object.isbn %}">Editar</a>
+    <a href="{% url 'libro-list' %}">Volver a la lista</a>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Libros</title>
+    <style>
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+        }
+        .pagination .current {
+            font-weight: bold;
+            background: #f0f0f0;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Libros</h1>
+
+    <!-- Formulario de búsqueda -->
+    <form class="search-form" method="get">
+        <input type="text" name="tema" placeholder="Buscar por tema..." value="{{ request.GET.tema }}">
+        <button type="submit">Buscar</button>
+        <a href="{% url 'libro-list' %}">Limpiar</a>
+    </form>
+
+    <a href="{% url 'libro-create' %}">Agregar nuevo libro</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Tema</th>
+                <th>Precio</th>
+                <th>Autor</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for libro in libros %}
+            <tr>
+                <td>{{ libro.isbn }}</td>
+                <td>{{ libro.tema }}</td>
+                <td>{{ libro.precio }}</td>
+                <td>{{ libro.id_autor.nombre|default:"-" }}</td>
+                <td>
+                    <a href="{% url 'libro-detail' libro.isbn %}">Ver</a>
+                    <a href="{% url 'libro-update' libro.isbn %}">Editar</a>
+                    <a href="{% url 'libro-delete' libro.isbn %}">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No hay libros registrados</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if libros.has_previous %}
+                <a href="?page=1{% if request.GET.tema %}&tema={{ request.GET.tema }}{% endif %}">&laquo; primera</a>
+                <a href="?page={{ libros.previous_page_number }}{% if request.GET.tema %}&tema={{ request.GET.tema }}{% endif %}">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ libros.number }} de {{ libros.paginator.num_pages }}.
+            </span>
+
+            {% if libros.has_next %}
+                <a href="?page={{ libros.next_page_number }}{% if request.GET.tema %}&tema={{ request.GET.tema }}{% endif %}">siguiente</a>
+                <a href="?page={{ libros.paginator.num_pages }}{% if request.GET.tema %}&tema={{ request.GET.tema }}{% endif %}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <p>Total de libros: {{ libros.paginator.count }}</p>
+</body>
+</html>
