@@ -1,7 +1,5 @@
-DATAGEDE
+LIBRERÍA
 ========
-
-##### Sistema de Gestión de Integralidad para los Estudiantes Universitarios
 
 ## Requisitos Previos
 
